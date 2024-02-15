@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,47 +6,48 @@ using System.Threading.Tasks;
 
 namespace PZ_18
 {
-    internal class Tranport
+    internal class Transport
     {
-        public enum TransportType { Trolleybus, Bus, electricTrain }
+        public enum TransportType { Trolleybus, Bus, ElectricTrain }
 
         public class PublicTransport
         {
             private static int totalTransportCount = 0;
 
-            public string StateNumber { get; }
-            public string Driver { get; }
-            public TransportType Type { get; }
-            public TimeSpan DepartureTime { get; }
-            public TimeSpan EndWorkTime { get; }
+            public string StateNumber { get; set; }
+            public string Driver { get; set; }
+            public TransportType Type { get; set; }
+            public TimeSpan DepartureTime { get; set; }
+            public TimeSpan EndWorkTime { get; set; }
 
-            public PublicTransport(string StateNumber, string Driver, TransportType type, TimeSpan departureTime, TimeSpan EndWorkTime)
+            public PublicTransport(string stateNumber, string driver, TransportType type, TimeSpan departureTime, TimeSpan endWorkTime)
             {
-                if (!CheckStateNumber(StateNumber))
+                if (!CheckStateNumber(stateNumber))
                 {
-                    Console.WriteLine("Неверный формат ГосНомера");
+                    StateNumber = "Неверный формат ГосНомера";
                 }
-
                 else
                 {
-                    StateNumber = StateNumber;
-                    Driver = string.IsNullOrWhiteSpace(Driver) ? "не назначен" : Driver;
-                    Type = type;
-                    DepartureTime = departureTime;
-                    EndWorkTime = EndWorkTime;
-                    totalTransportCount++;
+                    StateNumber = stateNumber;
+                   
                 }
+                Driver = string.IsNullOrWhiteSpace(driver) ? "не назначен" : driver;
+                Type = type;
+                DepartureTime = departureTime;
+                EndWorkTime = endWorkTime;
+  
+                totalTransportCount++;
             }
 
-            public static int TotalTransportCount
+            public static int GetTotalTransportCount()
             {
-                get { return totalTransportCount; }
+                return totalTransportCount;
             }
 
             public bool IsOnRoute()
             {
                 TimeSpan currentTime = DateTime.Now.TimeOfDay;
-                if(currentTime>= DepartureTime && currentTime <= EndWorkTime)
+                if (currentTime >= DepartureTime && currentTime <= EndWorkTime)
                 {
                     return true;
                 }
@@ -66,9 +67,10 @@ namespace PZ_18
                 Console.WriteLine($"ГосНомер: {StateNumber}, Водитель: {Driver}, Тип: {Type}, Состояние: {status}");
             }
 
+
             public static void PrintTotalTransportCount()
             {
-                Console.WriteLine($"Общее количество транспорта: {TotalTransportCount}");
+                Console.WriteLine($"Общее количество транспорта: {totalTransportCount}");
             }
 
             private bool CheckStateNumber(string StateNumber)
@@ -101,7 +103,6 @@ namespace PZ_18
                         return false;
                     }
                 }
-
                 return true;
             }
         }
